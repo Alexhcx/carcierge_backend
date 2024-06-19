@@ -18,8 +18,17 @@ public class ReservationModel implements Serializable {
     private UUID id;
 
     //user_id
+    @ManyToOne
+    @JoinColumn(name = "user_reserv_id")
+    private UserModel user;
 
     //car_id
+    @ManyToOne
+    @JoinColumn(name = "car_reserv_id")
+    private CarModel car;
+
+    @OneToOne (mappedBy = "reservation", cascade = CascadeType.ALL)
+    private PaymentModel payment;
 
     @Column(nullable = false)
     private String data_reserva;
@@ -53,6 +62,30 @@ public class ReservationModel implements Serializable {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
+
+    public CarModel getCar() {
+        return car;
+    }
+
+    public void setCar(CarModel car) {
+        this.car = car;
+    }
+
+    public PaymentModel getPayment() {
+        return payment;
+    }
+
+    public void setPayment(PaymentModel payment) {
+        this.payment = payment;
     }
 
     public String getData_reserva() {

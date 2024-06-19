@@ -1,6 +1,7 @@
 package com.carciege.api3.models;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -20,6 +21,10 @@ public class PaymentModel implements Serializable {
     private UUID id;
 
     //reservation_id
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToOne
+    @JoinColumn(name = "reservation_id")
+    private ReservationModel reservation;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal valor;
@@ -51,12 +56,20 @@ public class PaymentModel implements Serializable {
         updated_at = String.valueOf(LocalDateTime.now());
     }
 
-    public UUID getPayment_id() {
+    public UUID getId() {
         return id;
     }
 
-    public void setPayment_id(UUID id) {
+    public void setId(UUID id) {
         this.id = id;
+    }
+
+    public ReservationModel getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(ReservationModel reservation) {
+        this.reservation = reservation;
     }
 
     public BigDecimal getValor() {
@@ -66,6 +79,8 @@ public class PaymentModel implements Serializable {
     public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
+
+
 
     public String getData_pagamento() {
         return data_pagamento;

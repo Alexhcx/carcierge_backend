@@ -1,11 +1,14 @@
 package com.carciege.api3.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +20,14 @@ public class CarModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
+    private Set<ReservationModel> reservations = new HashSet<>();
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
+    private Set<RatingModel> ratings = new HashSet<>();
 
     @Column(nullable = false, length = 30)
     private String marca;
@@ -70,6 +81,30 @@ public class CarModel implements Serializable {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public Set<ReservationModel> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<ReservationModel> reservations) {
+        this.reservations = reservations;
+    }
+
+    public Set<RatingModel> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<RatingModel> ratings) {
+        this.ratings = ratings;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 
     public String getMarca() {

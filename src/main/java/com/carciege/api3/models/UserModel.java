@@ -1,10 +1,13 @@
 package com.carciege.api3.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -16,6 +19,14 @@ public class UserModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<ReservationModel> reservations = new HashSet<>();
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<RatingModel> ratings = new HashSet<>();
 
     @Column(nullable = false)
     private String firstName;
@@ -59,6 +70,22 @@ public class UserModel implements Serializable {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public Set<ReservationModel> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<ReservationModel> reservations) {
+        this.reservations = reservations;
+    }
+
+    public Set<RatingModel> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<RatingModel> ratings) {
+        this.ratings = ratings;
     }
 
     public String getFirstName() {

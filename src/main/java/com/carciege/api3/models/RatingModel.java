@@ -18,8 +18,14 @@ public class RatingModel implements Serializable {
     private UUID id;
 
     //user_id
+    @ManyToOne
+    @JoinColumn(name = "user_rating_id")
+    private UserModel user;
 
     //car_id
+    @ManyToOne
+    @JoinColumn(name = "car_rating_id")
+    private CarModel car;
 
     @Column(nullable = false)
     private int rating;
@@ -41,6 +47,22 @@ public class RatingModel implements Serializable {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
+
+    public CarModel getCar() {
+        return car;
+    }
+
+    public void setCar(CarModel car) {
+        this.car = car;
     }
 
     public int getRating() {
