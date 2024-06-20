@@ -1,0 +1,19 @@
+[
+  {
+    "user": "44f4a97c-d3ad-4bd5-a637-3c94753da438",
+    "car": "281de321-f686-4560-bbe7-43f762c4383d",
+    "payment": "",
+    "data_reserva": "2024-03-15",
+    "data_fim_reserva": "2024-03-22",
+    "status_reserva": "concluida",
+    "created_at": "2024-06-20T10:17:10.703280100",
+    "updated_at": "2024-06-20T10:17:10.703280100"
+  },
+  {
+    "user": "44f4a97c-d3ad-4bd5-a637-3c94753da438",
+    "car": "8f50b3df-bbbc-4ea1-a260-1258fbbc5f08",
+    "data_reserva": "2024-04-01",
+    "data_fim_reserva": "2024-04-08",
+    "status_reserva": "concluida"
+  }
+]

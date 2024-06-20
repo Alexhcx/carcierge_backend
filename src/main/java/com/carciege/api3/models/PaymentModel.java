@@ -3,6 +3,7 @@ package com.carciege.api3.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "TB_PAYMENTS")
-public class PaymentModel implements Serializable {
+public class PaymentModel extends RepresentationModel<PaymentModel> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

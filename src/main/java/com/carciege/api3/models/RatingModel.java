@@ -1,6 +1,7 @@
 package com.carciege.api3.models;
 
 import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -9,7 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "TB_RATINGS")
-public class RatingModel implements Serializable {
+public class RatingModel extends RepresentationModel<RatingModel> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

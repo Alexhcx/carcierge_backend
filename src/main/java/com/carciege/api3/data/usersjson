@@ -1,0 +1,22 @@
+[
+  {
+    "firstName": "Alexandre",
+    "lastName": "Nazareth",
+    "email": "Alexandrenazareth@hotmail.com",
+    "password": "123456",
+    "phone_number": "(63) 98115-4556",
+    "city": "Goiania",
+    "state": "GO",
+    "address": "Rua 261,38 Setor Leste Universitario"
+  },
+  {
+    "firstName": "Admin",
+    "lastName": "Admin",
+    "email": "admin@carcierge.com",
+    "password": "admin123",
+    "phone_number": "(62) 98215-3423",
+    "city": "Goiania",
+    "state": "GO",
+    "address": "Carcierge"
+  }
+]
