@@ -1,0 +1,7 @@
+{
+  "reservationId": "8ef14dc7-a857-4031-b7cf-e55cc2b282e5",
+  "data_pagamento": "2024-06-20",
+  "status": "Confirmado",
+  "metodo_pagamento": "cartão de credito",
+  "valor": 120000.0
+}

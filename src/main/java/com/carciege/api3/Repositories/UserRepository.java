@@ -2,12 +2,11 @@ package com.carciege.api3.Repositories;
 
 import com.carciege.api3.models.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+@Repository
 public interface UserRepository extends JpaRepository<UserModel, UUID> {
-    //UserModel findUserModelByFirstName(String firstName);
-    //UserModel findUserModelByLastName(String lastName);
-    //UserModel findUserModelByCity(String city);
-    //UserModel findUserModelByState(String state);
+
 }

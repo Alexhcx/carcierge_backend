@@ -1,7 +1,11 @@
 package com.carciege.api3.controllers;
 
+import com.carciege.api3.DTOs.FazerReservaDto;
+import com.carciege.api3.DTOs.ReservationRecordDto;
 import com.carciege.api3.DTOs.UserRecordDto;
+import com.carciege.api3.Repositories.ReservationRepository;
 import com.carciege.api3.Repositories.UserRepository;
+import com.carciege.api3.models.ReservationModel;
 import com.carciege.api3.models.UserModel;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +26,9 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ReservationRepository reservationRepository;
 
     @GetMapping("/users")
     public ResponseEntity<List<UserModel>> getAllUsers(){
@@ -73,4 +80,20 @@ public class UserController {
         BeanUtils.copyProperties(userRecordDto, userModel);
         return ResponseEntity.status(HttpStatus.OK).body(userRepository.save(userModel));
     }
+
+    @PostMapping("/users/{id}/reservations")
+    public ResponseEntity<Object> saveUserReservation(@PathVariable(value = "id") UUID id,
+                                                      @RequestBody @Valid ReservationRecordDto reservationRecordDto) {
+        Optional<UserModel> userO = userRepository.findById(id);
+        if (userO.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        }
+
+        var reservationModel = new ReservationModel();
+        BeanUtils.copyProperties(reservationRecordDto, reservationModel);
+        reservationModel.setUser(userO.get());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(reservationRepository.save(reservationModel));
+    }
+
 }

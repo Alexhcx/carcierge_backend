@@ -1,8 +1,11 @@
 package com.carciege.api3.controllers;
 
 import com.carciege.api3.DTOs.PaymentRecordDto;
+import com.carciege.api3.DTOs.ReservationPaymentDto;
 import com.carciege.api3.Repositories.PaymentRepository;
+import com.carciege.api3.Repositories.ReservationRepository;
 import com.carciege.api3.models.PaymentModel;
+import com.carciege.api3.models.ReservationModel;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ public class PaymentController {
 
     @Autowired
     PaymentRepository paymentRepository;
+
+    @Autowired
+    ReservationRepository reservationRepository;
 
     @GetMapping("/payments")
     public ResponseEntity<List<PaymentModel>> getAllPayments(){
@@ -72,6 +78,20 @@ public class PaymentController {
         var paymentModel = paymentO.get();
         BeanUtils.copyProperties(paymentRecordDto, paymentModel);
         return ResponseEntity.status(HttpStatus.OK).body(paymentRepository.save(paymentModel));
+    }
+
+    @PostMapping("/payments/fazerpagamento")
+    public ResponseEntity<Object> associatePaymentWithReservation(@RequestBody @Valid ReservationPaymentDto reservationPaymentDto) {
+        Optional<ReservationModel> reservationO = reservationRepository.findById(reservationPaymentDto.reservationId());
+        if (reservationO.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reservation not found.");
+        }
+
+        var paymentModel = new PaymentModel();
+        BeanUtils.copyProperties(reservationPaymentDto, paymentModel);
+        paymentModel.setReservation(reservationO.get());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(paymentRepository.save(paymentModel));
     }
 
 }

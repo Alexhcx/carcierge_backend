@@ -1,8 +1,12 @@
 package com.carciege.api3.controllers;
 
 import com.carciege.api3.DTOs.RatingRecordDto;
+import com.carciege.api3.Repositories.CarRepository;
 import com.carciege.api3.Repositories.RatingRepository;
+import com.carciege.api3.Repositories.UserRepository;
+import com.carciege.api3.models.CarModel;
 import com.carciege.api3.models.RatingModel;
+import com.carciege.api3.models.UserModel;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,12 @@ public class RatingController {
 
     @Autowired
     RatingRepository ratingRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    CarRepository carRepository;
 
     @GetMapping("/ratings")
     public ResponseEntity<List<RatingModel>> getAllRatings(){
@@ -73,4 +83,25 @@ public class RatingController {
         BeanUtils.copyProperties(ratingRecordDto, ratingModel);
         return ResponseEntity.status(HttpStatus.OK).body(ratingRepository.save(ratingModel));
     }
+
+    @PostMapping("/ratings/fazercomentario")
+    public ResponseEntity<Object> saveComentario(@RequestBody @Valid RatingRecordDto ratingRecordDto) {
+        Optional<UserModel> userO = userRepository.findById(ratingRecordDto.userId());
+        if (userO.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        }
+
+        Optional<CarModel> carO = carRepository.findById(ratingRecordDto.carId());
+        if (carO.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found.");
+        }
+
+        var ratingModel = new RatingModel();
+        BeanUtils.copyProperties(ratingRecordDto, ratingModel);
+        ratingModel.setUser(userO.get());
+        ratingModel.setCar(carO.get());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(ratingRepository.save(ratingModel));
+    }
+
 }

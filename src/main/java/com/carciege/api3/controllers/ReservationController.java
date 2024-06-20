@@ -1,11 +1,16 @@
 package com.carciege.api3.controllers;
 
 
+import com.carciege.api3.DTOs.FazerReservaDto;
 import com.carciege.api3.DTOs.ReservationRecordDto;
 
+import com.carciege.api3.Repositories.CarRepository;
 import com.carciege.api3.Repositories.ReservationRepository;
+import com.carciege.api3.Repositories.UserRepository;
+import com.carciege.api3.models.CarModel;
 import com.carciege.api3.models.ReservationModel;
 
+import com.carciege.api3.models.UserModel;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +30,12 @@ public class ReservationController {
 
     @Autowired
     ReservationRepository reservationRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CarRepository carRepository;
 
     @GetMapping("/reservations")
     public ResponseEntity<List<ReservationModel>> getAllReservations(){
@@ -76,4 +87,25 @@ public class ReservationController {
         BeanUtils.copyProperties(reservationRecordDto, reservationModel);
         return ResponseEntity.status(HttpStatus.OK).body(reservationRepository.save(reservationModel));
     }
+
+    @PostMapping("/reservations/addreserva")
+    public ResponseEntity<Object> createCompleteReservation(@RequestBody @Valid FazerReservaDto completeReservationDto) {
+        Optional<UserModel> userO = userRepository.findById(completeReservationDto.userId());
+        if (userO.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        }
+
+        Optional<CarModel> carO = carRepository.findById(completeReservationDto.carId());
+        if (carO.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found.");
+        }
+
+        var reservationModel = new ReservationModel();
+        BeanUtils.copyProperties(completeReservationDto, reservationModel);
+        reservationModel.setUser(userO.get());
+        reservationModel.setCar(carO.get());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(reservationRepository.save(reservationModel));
+    }
+
 }

@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record PaymentRecordDto(@NotNull BigDecimal valor,
-                               @NotNull UUID reservation_Id,
                                @NotBlank String data_pagamento,
                                @NotBlank String metodo_pagamento,
                                @NotBlank String status) {

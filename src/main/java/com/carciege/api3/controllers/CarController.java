@@ -1,8 +1,11 @@
 package com.carciege.api3.controllers;
 
 import com.carciege.api3.DTOs.CarRecordDto;
+import com.carciege.api3.DTOs.ReservationRecordDto;
 import com.carciege.api3.Repositories.CarRepository;
+import com.carciege.api3.Repositories.ReservationRepository;
 import com.carciege.api3.models.CarModel;
+import com.carciege.api3.models.ReservationModel;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,9 @@ public class CarController {
 
     @Autowired
     CarRepository carRepository;
+
+    @Autowired
+    ReservationRepository reservationRepository;
 
     @GetMapping("/cars")
     public ResponseEntity<List<CarModel>> getAllCars(){
@@ -74,4 +80,20 @@ public class CarController {
         BeanUtils.copyProperties(carRecordDto, carModel);
         return ResponseEntity.status(HttpStatus.OK).body(carRepository.save(carModel));
     }
+
+    @PostMapping("/cars/{id}/reservations")
+    public ResponseEntity<Object> saveCarReservation(@PathVariable(value = "id") UUID id,
+                                                     @RequestBody @Valid ReservationRecordDto reservationRecordDto) {
+        Optional<CarModel> carO = carRepository.findById(id);
+        if (carO.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found.");
+        }
+
+        var reservationModel = new ReservationModel();
+        BeanUtils.copyProperties(reservationRecordDto, reservationModel);
+        reservationModel.setCar(carO.get());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(reservationRepository.save(reservationModel));
+    }
+
 }
