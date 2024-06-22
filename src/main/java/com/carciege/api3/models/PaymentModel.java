@@ -3,6 +3,10 @@ package com.carciege.api3.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
@@ -12,6 +16,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "TB_PAYMENTS")
 public class PaymentModel extends RepresentationModel<PaymentModel> implements Serializable {
     @Serial
@@ -21,7 +29,6 @@ public class PaymentModel extends RepresentationModel<PaymentModel> implements S
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    //reservation_id
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToOne
     @JoinColumn(name = "reservation_id")
@@ -57,69 +64,4 @@ public class PaymentModel extends RepresentationModel<PaymentModel> implements S
         updated_at = String.valueOf(LocalDateTime.now());
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public ReservationModel getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(ReservationModel reservation) {
-        this.reservation = reservation;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-
-
-    public String getData_pagamento() {
-        return data_pagamento;
-    }
-
-    public void setData_pagamento(String data_pagamento) {
-        this.data_pagamento = data_pagamento;
-    }
-
-    public String getMetodo_pagamento() {
-        return metodo_pagamento;
-    }
-
-    public void setMetodo_pagamento(String metodo_pagamento) {
-        this.metodo_pagamento = metodo_pagamento;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public String getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
-    }
 }

@@ -2,6 +2,10 @@ package com.carciege.api3.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
@@ -13,6 +17,10 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "TB_CARS")
 public class CarModel extends RepresentationModel<CarModel> implements Serializable {
     @Serial
@@ -74,125 +82,5 @@ public class CarModel extends RepresentationModel<CarModel> implements Serializa
     @PreUpdate
     protected void onUpdate() {
         updated_at = String.valueOf(LocalDateTime.now());
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public Set<ReservationModel> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(Set<ReservationModel> reservations) {
-        this.reservations = reservations;
-    }
-
-    public Set<RatingModel> getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(Set<RatingModel> ratings) {
-        this.ratings = ratings;
-    }
-
-    public String getImagem() {
-        return imagem;
-    }
-
-    public void setImagem(String imagem) {
-        this.imagem = imagem;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    public int getAno() {
-        return ano;
-    }
-
-    public void setAno(int ano) {
-        this.ano = ano;
-    }
-
-    public String getCor() {
-        return cor;
-    }
-
-    public void setCor(String cor) {
-        this.cor = cor;
-    }
-
-    public String getPlaca() {
-        return placa;
-    }
-
-    public void setPlaca(String placa) {
-        this.placa = placa;
-    }
-
-    public BigDecimal getTaxa_diaria() {
-        return taxa_diaria;
-    }
-
-    public void setTaxa_diaria(BigDecimal taxa_diaria) {
-        this.taxa_diaria = taxa_diaria;
-    }
-
-    public BigDecimal getTaxa_hora() {
-        return taxa_hora;
-    }
-
-    public void setTaxa_hora(BigDecimal taxa_hora) {
-        this.taxa_hora = taxa_hora;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public String getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 }
