@@ -18,5 +18,15 @@
     "city": "Goiania",
     "state": "GO",
     "address": "Carcierge"
+  },
+  {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "jondoe@hotmail.com",
+    "password": "123456",
+    "phone_number": "(99) 99195-9556",
+    "city": "Goiania",
+    "state": "GO",
+    "address": "Rua 264,95 Setor Leste Universitario"
   }
 ]

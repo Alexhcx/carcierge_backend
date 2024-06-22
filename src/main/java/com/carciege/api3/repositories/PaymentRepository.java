@@ -1,4 +1,4 @@
-package com.carciege.api3.Repositories;
+package com.carciege.api3.repositories;
 
 import com.carciege.api3.models.PaymentModel;
 import org.springframework.data.jpa.repository.JpaRepository;

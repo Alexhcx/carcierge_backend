@@ -1,4 +1,4 @@
-package com.carciege.api3.Repositories;
+package com.carciege.api3.repositories;
 
 import com.carciege.api3.models.RatingModel;
 import org.springframework.data.jpa.repository.JpaRepository;

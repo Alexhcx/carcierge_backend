@@ -1,10 +1,9 @@
 package com.carciege.api3.controllers;
 
-import com.carciege.api3.DTOs.FazerReservaDto;
 import com.carciege.api3.DTOs.ReservationRecordDto;
 import com.carciege.api3.DTOs.UserRecordDto;
-import com.carciege.api3.Repositories.ReservationRepository;
-import com.carciege.api3.Repositories.UserRepository;
+import com.carciege.api3.repositories.ReservationRepository;
+import com.carciege.api3.repositories.UserRepository;
 import com.carciege.api3.models.ReservationModel;
 import com.carciege.api3.models.UserModel;
 import jakarta.validation.Valid;

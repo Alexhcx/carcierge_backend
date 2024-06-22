@@ -2,8 +2,8 @@ package com.carciege.api3.controllers;
 
 import com.carciege.api3.DTOs.PaymentRecordDto;
 import com.carciege.api3.DTOs.ReservationPaymentDto;
-import com.carciege.api3.Repositories.PaymentRepository;
-import com.carciege.api3.Repositories.ReservationRepository;
+import com.carciege.api3.repositories.PaymentRepository;
+import com.carciege.api3.repositories.ReservationRepository;
 import com.carciege.api3.models.PaymentModel;
 import com.carciege.api3.models.ReservationModel;
 import jakarta.validation.Valid;
@@ -80,7 +80,7 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.OK).body(paymentRepository.save(paymentModel));
     }
 
-    @PostMapping("/payments/fazerpagamento")
+    @PostMapping("/payments/processarpagamento")
     public ResponseEntity<Object> associatePaymentWithReservation(@RequestBody @Valid ReservationPaymentDto reservationPaymentDto) {
         Optional<ReservationModel> reservationO = reservationRepository.findById(reservationPaymentDto.reservationId());
         if (reservationO.isEmpty()) {

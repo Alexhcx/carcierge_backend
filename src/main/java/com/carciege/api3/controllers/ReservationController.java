@@ -4,9 +4,9 @@ package com.carciege.api3.controllers;
 import com.carciege.api3.DTOs.FazerReservaDto;
 import com.carciege.api3.DTOs.ReservationRecordDto;
 
-import com.carciege.api3.Repositories.CarRepository;
-import com.carciege.api3.Repositories.ReservationRepository;
-import com.carciege.api3.Repositories.UserRepository;
+import com.carciege.api3.repositories.CarRepository;
+import com.carciege.api3.repositories.ReservationRepository;
+import com.carciege.api3.repositories.UserRepository;
 import com.carciege.api3.models.CarModel;
 import com.carciege.api3.models.ReservationModel;
 
