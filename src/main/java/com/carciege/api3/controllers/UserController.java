@@ -6,6 +6,7 @@ import com.carciege.api3.repositories.ReservationRepository;
 import com.carciege.api3.repositories.UserRepository;
 import com.carciege.api3.models.Reservation;
 import com.carciege.api3.models.User;
+import com.carciege.api3.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class UserController {
     @Autowired
     ReservationRepository reservationRepository;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> usersList = userRepository.findAll();
@@ -49,6 +53,12 @@ public class UserController {
         }
         userO.get().add(linkTo(methodOn(UserController.class).getAllUsers()).withRel("Users List"));
         return ResponseEntity.status(HttpStatus.OK).body(userO.get());
+    }
+
+    @GetMapping("/user/id")
+    public ResponseEntity<UUID> getUserId(@RequestParam String firstName, @RequestParam String lastName) {
+        Optional<UUID> userId = userService.getUserIdByFirstNameAndLastName(firstName, lastName);
+        return userId.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/users")

@@ -108,4 +108,35 @@ public class ReservationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(reservationRepository.save(reservationModel));
     }
 
+    @GetMapping("/reservations/user/{userId}/car/{carId}")
+    public ResponseEntity<List<Reservation>> getReservationsByUserAndCar(
+            @PathVariable UUID userId,
+            @PathVariable UUID carId
+    ) {
+        Optional<User> userO = userRepository.findById(userId);
+        Optional<Car> carO = carRepository.findById(carId);
+
+        if (userO.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        if (carO.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        List<Reservation> reservationsList = reservationRepository.findByUserAndCar(userO.get(), carO.get());
+
+        if (reservationsList.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        // Adicionando links HATEOAS para cada reserva
+        for (Reservation reservation : reservationsList) {
+            UUID id = reservation.getId();
+            reservation.add(linkTo(methodOn(ReservationController.class).getOneReservation(id)).withSelfRel());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(reservationsList);
+    }
+
 }
