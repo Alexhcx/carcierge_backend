@@ -4,10 +4,9 @@ import com.carciege.api3.DTOs.LoginRequestDTO;
 import com.carciege.api3.DTOs.RegisterRequestDTO;
 import com.carciege.api3.DTOs.ResponseDTO;
 import com.carciege.api3.infra.security.TokenService;
-import com.carciege.api3.models.UserModel;
+import com.carciege.api3.models.User;
 import com.carciege.api3.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +26,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequestDTO body){
-        UserModel user = this.repository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = this.repository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
         if(passwordEncoder.matches(body.password(), user.getPassword())) {
             String token = this.tokenService.generateToken(user);
             return ResponseEntity.ok(new ResponseDTO(user.getFirstName(), user.getLastName(), token));
@@ -37,10 +36,10 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterRequestDTO body){
-        Optional<UserModel> user = this.repository.findByEmail(body.email());
+        Optional<User> user = this.repository.findByEmail(body.email());
 
         if(user.isEmpty()) {
-            UserModel newUser = new UserModel();
+            User newUser = new User();
             newUser.setPassword(passwordEncoder.encode(body.password()));
             newUser.setEmail(body.email());
             newUser.setFirstName(body.firstName());

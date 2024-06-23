@@ -1,11 +1,11 @@
 package com.carciege.api3.controllers;
 
-import com.carciege.api3.DTOs.CarRecordDto;
-import com.carciege.api3.DTOs.ReservationRecordDto;
+import com.carciege.api3.DTOs.CarDto;
+import com.carciege.api3.DTOs.ReservationDto;
 import com.carciege.api3.repositories.CarRepository;
 import com.carciege.api3.repositories.ReservationRepository;
-import com.carciege.api3.models.CarModel;
-import com.carciege.api3.models.ReservationModel;
+import com.carciege.api3.models.Car;
+import com.carciege.api3.models.Reservation;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +30,10 @@ public class CarController {
     ReservationRepository reservationRepository;
 
     @GetMapping("/cars")
-    public ResponseEntity<List<CarModel>> getAllCars(){
-        List<CarModel> carsList = carRepository.findAll();
+    public ResponseEntity<List<Car>> getAllCars(){
+        List<Car> carsList = carRepository.findAll();
         if(!carsList.isEmpty()) {
-            for(CarModel car : carsList) {
+            for(Car car : carsList) {
                 UUID id = car.getId();
                 car.add(linkTo(methodOn(CarController.class).getOneCar(id)).withSelfRel());
             }
@@ -43,7 +43,7 @@ public class CarController {
 
     @GetMapping("/cars/{id}")
     public ResponseEntity<Object> getOneCar(@PathVariable(value="id") UUID id){
-        Optional<CarModel> carO = carRepository.findById(id);
+        Optional<Car> carO = carRepository.findById(id);
         if(carO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("car not found.");
         }
@@ -52,15 +52,15 @@ public class CarController {
     }
 
     @PostMapping("/cars")
-    public ResponseEntity<CarModel> saveCar(@RequestBody @Valid CarRecordDto carRecordDto) {
-        var carModel = new CarModel();
-        BeanUtils.copyProperties(carRecordDto, carModel);
+    public ResponseEntity<Car> saveCar(@RequestBody @Valid CarDto carDto) {
+        var carModel = new Car();
+        BeanUtils.copyProperties(carDto, carModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(carRepository.save(carModel));
     }
 
     @DeleteMapping("/cars/{id}")
     public ResponseEntity<Object> deleteCar(@PathVariable(value="id") UUID id) {
-        Optional<CarModel> carO = carRepository.findById(id);
+        Optional<Car> carO = carRepository.findById(id);
         if(carO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found.");
         }
@@ -70,26 +70,26 @@ public class CarController {
 
     @PutMapping("/cars/{id}")
     public ResponseEntity<Object> updateCar(@PathVariable(value="id") UUID id,
-                                                @RequestBody @Valid CarRecordDto carRecordDto) {
-        Optional<CarModel> carO = carRepository.findById(id);
+                                                @RequestBody @Valid CarDto carDto) {
+        Optional<Car> carO = carRepository.findById(id);
         if(carO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found.");
         }
         var carModel = carO.get();
-        BeanUtils.copyProperties(carRecordDto, carModel);
+        BeanUtils.copyProperties(carDto, carModel);
         return ResponseEntity.status(HttpStatus.OK).body(carRepository.save(carModel));
     }
 
     @PostMapping("/cars/{id}/reservations")
     public ResponseEntity<Object> saveCarReservation(@PathVariable(value = "id") UUID id,
-                                                     @RequestBody @Valid ReservationRecordDto reservationRecordDto) {
-        Optional<CarModel> carO = carRepository.findById(id);
+                                                     @RequestBody @Valid ReservationDto reservationDto) {
+        Optional<Car> carO = carRepository.findById(id);
         if (carO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found.");
         }
 
-        var reservationModel = new ReservationModel();
-        BeanUtils.copyProperties(reservationRecordDto, reservationModel);
+        var reservationModel = new Reservation();
+        BeanUtils.copyProperties(reservationDto, reservationModel);
         reservationModel.setCar(carO.get());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(reservationRepository.save(reservationModel));

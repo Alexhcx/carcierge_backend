@@ -1,5 +1,6 @@
 package com.carciege.api3.models;
 
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,9 +11,8 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -20,8 +20,8 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "TB_USERS")
-public class UserModel extends RepresentationModel<UserModel> implements Serializable {
+@Table(name = "TB_PAYMENTS")
+public class Payment extends RepresentationModel<Payment> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -30,40 +30,31 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     private UUID id;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<ReservationModel> reservations = new HashSet<>();
+    @OneToOne
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<RatingModel> ratings = new HashSet<>();
-
-    @Column(nullable = false)
-    private String firstName;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal valor;
 
     @Column(nullable = false)
-    private String lastName;
-
-    @Column(unique = true, nullable = false)
-    private String email;
+    private String data_pagamento;
 
     @Column(nullable = false)
-    private String password;
+    private String metodo_pagamento;
 
-    private String phone_number;
-
-    private String city;
-
-    private String state;
-
-    private String address;
+    @Column(nullable = false)
+    private String status;
 
     @Column(nullable = false, updatable = false)
     private String created_at;
 
+    @Column(nullable = false)
     private String updated_at;
 
     @PrePersist
     protected void onCreate() {
+        data_pagamento = String.valueOf(LocalDateTime.now());
         created_at = String.valueOf(LocalDateTime.now());
         updated_at = String.valueOf(LocalDateTime.now());
     }
@@ -72,4 +63,5 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     protected void onUpdate() {
         updated_at = String.valueOf(LocalDateTime.now());
     }
+
 }

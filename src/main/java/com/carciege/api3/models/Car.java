@@ -1,6 +1,5 @@
 package com.carciege.api3.models;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +12,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -20,8 +21,8 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "TB_PAYMENTS")
-public class PaymentModel extends RepresentationModel<PaymentModel> implements Serializable {
+@Table(name = "TB_CARS")
+public class Car extends RepresentationModel<Car> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -30,31 +31,50 @@ public class PaymentModel extends RepresentationModel<PaymentModel> implements S
     private UUID id;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToOne
-    @JoinColumn(name = "reservation_id")
-    private ReservationModel reservation;
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
+    private Set<Reservation> reservations = new HashSet<>();
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
+    private Set<Rating> ratings = new HashSet<>();
+
+    @Column(nullable = false, length = 30)
+    private String marca;
+
+    @Column(unique = true, nullable = false, length = 30)
+    private String modelo;
+
+    @Column(nullable = false, length = 1000)
+    private String descricao;
+
+    @Column(length = 500)
+    private String imagem;
+
+    @Column(nullable = false)
+    private int ano;
+
+    @Column(nullable = false, length = 30)
+    private String cor;
+
+    @Column(nullable = false, length = 20)
+    private String placa;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal valor;
+    private BigDecimal taxa_diaria;
 
-    @Column(nullable = false)
-    private String data_pagamento;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal taxa_hora;
 
-    @Column(nullable = false)
-    private String metodo_pagamento;
-
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String status;
 
     @Column(nullable = false, updatable = false)
     private String created_at;
 
-    @Column(nullable = false)
     private String updated_at;
 
     @PrePersist
     protected void onCreate() {
-        data_pagamento = String.valueOf(LocalDateTime.now());
         created_at = String.valueOf(LocalDateTime.now());
         updated_at = String.valueOf(LocalDateTime.now());
     }
@@ -63,5 +83,4 @@ public class PaymentModel extends RepresentationModel<PaymentModel> implements S
     protected void onUpdate() {
         updated_at = String.valueOf(LocalDateTime.now());
     }
-
 }

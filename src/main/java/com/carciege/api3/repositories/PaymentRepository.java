@@ -1,11 +1,11 @@
 package com.carciege.api3.repositories;
 
-import com.carciege.api3.models.PaymentModel;
+import com.carciege.api3.models.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface PaymentRepository extends JpaRepository<PaymentModel, UUID> {
+public interface PaymentRepository extends JpaRepository<Payment, UUID> {
 }

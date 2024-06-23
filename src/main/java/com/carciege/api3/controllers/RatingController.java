@@ -1,12 +1,12 @@
 package com.carciege.api3.controllers;
 
-import com.carciege.api3.DTOs.RatingRecordDto;
+import com.carciege.api3.DTOs.RatingDto;
 import com.carciege.api3.repositories.CarRepository;
 import com.carciege.api3.repositories.RatingRepository;
 import com.carciege.api3.repositories.UserRepository;
-import com.carciege.api3.models.CarModel;
-import com.carciege.api3.models.RatingModel;
-import com.carciege.api3.models.UserModel;
+import com.carciege.api3.models.Car;
+import com.carciege.api3.models.Rating;
+import com.carciege.api3.models.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +34,10 @@ public class RatingController {
     CarRepository carRepository;
 
     @GetMapping("/ratings")
-    public ResponseEntity<List<RatingModel>> getAllRatings(){
-        List<RatingModel> ratingsList = ratingRepository.findAll();
+    public ResponseEntity<List<Rating>> getAllRatings(){
+        List<Rating> ratingsList = ratingRepository.findAll();
         if(!ratingsList.isEmpty()) {
-            for(RatingModel rating : ratingsList) {
+            for(Rating rating : ratingsList) {
                 UUID id = rating.getId();
                 rating.add(linkTo(methodOn(RatingController.class).getOneRating(id)).withSelfRel());
             }
@@ -47,7 +47,7 @@ public class RatingController {
 
     @GetMapping("/ratings/{id}")
     public ResponseEntity<Object> getOneRating(@PathVariable(value="id") UUID id){
-        Optional<RatingModel> ratingO = ratingRepository.findById(id);
+        Optional<Rating> ratingO = ratingRepository.findById(id);
         if(ratingO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("rating not found.");
         }
@@ -56,15 +56,15 @@ public class RatingController {
     }
 
     @PostMapping("/ratings")
-    public ResponseEntity<RatingModel> saveRating(@RequestBody @Valid RatingRecordDto ratingRecordDto) {
-        var ratingModel = new RatingModel();
-        BeanUtils.copyProperties(ratingRecordDto, ratingModel);
+    public ResponseEntity<Rating> saveRating(@RequestBody @Valid RatingDto ratingDto) {
+        var ratingModel = new Rating();
+        BeanUtils.copyProperties(ratingDto, ratingModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(ratingRepository.save(ratingModel));
     }
 
     @DeleteMapping("/ratings/{id}")
     public ResponseEntity<Object> deleteRating(@PathVariable(value="id") UUID id) {
-        Optional<RatingModel> ratingO = ratingRepository.findById(id);
+        Optional<Rating> ratingO = ratingRepository.findById(id);
         if(ratingO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rating not found.");
         }
@@ -74,30 +74,30 @@ public class RatingController {
 
     @PutMapping("/ratings/{id}")
     public ResponseEntity<Object> updateRating(@PathVariable(value="id") UUID id,
-                                            @RequestBody @Valid RatingRecordDto ratingRecordDto) {
-        Optional<RatingModel> ratingO = ratingRepository.findById(id);
+                                            @RequestBody @Valid RatingDto ratingDto) {
+        Optional<Rating> ratingO = ratingRepository.findById(id);
         if(ratingO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rating not found.");
         }
         var ratingModel = ratingO.get();
-        BeanUtils.copyProperties(ratingRecordDto, ratingModel);
+        BeanUtils.copyProperties(ratingDto, ratingModel);
         return ResponseEntity.status(HttpStatus.OK).body(ratingRepository.save(ratingModel));
     }
 
     @PostMapping("/ratings/fazercomentario")
-    public ResponseEntity<Object> saveComentario(@RequestBody @Valid RatingRecordDto ratingRecordDto) {
-        Optional<UserModel> userO = userRepository.findById(ratingRecordDto.userId());
+    public ResponseEntity<Object> saveComentario(@RequestBody @Valid RatingDto ratingDto) {
+        Optional<User> userO = userRepository.findById(ratingDto.userId());
         if (userO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         }
 
-        Optional<CarModel> carO = carRepository.findById(ratingRecordDto.carId());
+        Optional<Car> carO = carRepository.findById(ratingDto.carId());
         if (carO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found.");
         }
 
-        var ratingModel = new RatingModel();
-        BeanUtils.copyProperties(ratingRecordDto, ratingModel);
+        var ratingModel = new Rating();
+        BeanUtils.copyProperties(ratingDto, ratingModel);
         ratingModel.setUser(userO.get());
         ratingModel.setCar(carO.get());
 

@@ -17,8 +17,8 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "TB_RATINGS")
-public class RatingModel extends RepresentationModel<RatingModel> implements Serializable {
+@Table(name = "TB_RESERVATIONS")
+public class Reservation extends RepresentationModel<Reservation> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -28,25 +28,40 @@ public class RatingModel extends RepresentationModel<RatingModel> implements Ser
 
     //user_id
     @ManyToOne
-    @JoinColumn(name = "user_rating_id")
-    private UserModel user;
+    @JoinColumn(name = "user_reserv_id")
+    private User user;
 
     //car_id
     @ManyToOne
-    @JoinColumn(name = "car_rating_id")
-    private CarModel car;
+    @JoinColumn(name = "car_reserv_id")
+    private Car car;
+
+    @OneToOne (mappedBy = "reservation", cascade = CascadeType.ALL)
+    private Payment payment;
 
     @Column(nullable = false)
-    private int rating;
+    private String data_reserva;
 
-    @Column(nullable = false, length = 500)
-    private String comentario;
+    @Column(nullable = false)
+    private String data_fim_reserva;
+
+    @Column(nullable = false)
+    private String status_reserva;
 
     @Column(nullable = false, updatable = false)
     private String created_at;
 
+    @Column(nullable = false)
+    private String updated_at;
+
     @PrePersist
     protected void onCreate() {
         created_at = String.valueOf(LocalDateTime.now());
+        updated_at = String.valueOf(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updated_at = String.valueOf(LocalDateTime.now());
     }
 }

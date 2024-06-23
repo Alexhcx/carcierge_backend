@@ -1,11 +1,11 @@
 package com.carciege.api3.controllers;
 
-import com.carciege.api3.DTOs.PaymentRecordDto;
+import com.carciege.api3.DTOs.PaymentDto;
 import com.carciege.api3.DTOs.ReservationPaymentDto;
 import com.carciege.api3.repositories.PaymentRepository;
 import com.carciege.api3.repositories.ReservationRepository;
-import com.carciege.api3.models.PaymentModel;
-import com.carciege.api3.models.ReservationModel;
+import com.carciege.api3.models.Payment;
+import com.carciege.api3.models.Reservation;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +30,10 @@ public class PaymentController {
     ReservationRepository reservationRepository;
 
     @GetMapping("/payments")
-    public ResponseEntity<List<PaymentModel>> getAllPayments(){
-        List<PaymentModel> paymentsList = paymentRepository.findAll();
+    public ResponseEntity<List<Payment>> getAllPayments(){
+        List<Payment> paymentsList = paymentRepository.findAll();
         if(!paymentsList.isEmpty()) {
-            for(PaymentModel payment : paymentsList) {
+            for(Payment payment : paymentsList) {
                 UUID id = payment.getId();
                 payment.add(linkTo(methodOn(PaymentController.class).getOnePayment(id)).withSelfRel());
             }
@@ -43,7 +43,7 @@ public class PaymentController {
 
     @GetMapping("/payments/{id}")
     public ResponseEntity<Object> getOnePayment(@PathVariable(value="id") UUID id){
-        Optional<PaymentModel> paymentO = paymentRepository.findById(id);
+        Optional<Payment> paymentO = paymentRepository.findById(id);
         if(paymentO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Payment not found.");
         }
@@ -52,15 +52,15 @@ public class PaymentController {
     }
 
     @PostMapping("/payments")
-    public ResponseEntity<PaymentModel> savePayment(@RequestBody @Valid PaymentRecordDto paymentRecordDto) {
-        var paymentModel = new PaymentModel();
-        BeanUtils.copyProperties(paymentRecordDto, paymentModel);
+    public ResponseEntity<Payment> savePayment(@RequestBody @Valid PaymentDto paymentDto) {
+        var paymentModel = new Payment();
+        BeanUtils.copyProperties(paymentDto, paymentModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentRepository.save(paymentModel));
     }
 
     @DeleteMapping("/payments/{id}")
     public ResponseEntity<Object> deletePayment(@PathVariable(value="id") UUID id) {
-        Optional<PaymentModel> paymentO = paymentRepository.findById(id);
+        Optional<Payment> paymentO = paymentRepository.findById(id);
         if(paymentO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Payment not found.");
         }
@@ -70,24 +70,24 @@ public class PaymentController {
 
     @PutMapping("/payments/{id}")
     public ResponseEntity<Object> updatePayment(@PathVariable(value="id") UUID id,
-                                            @RequestBody @Valid PaymentRecordDto paymentRecordDto) {
-        Optional<PaymentModel> paymentO = paymentRepository.findById(id);
+                                            @RequestBody @Valid PaymentDto paymentDto) {
+        Optional<Payment> paymentO = paymentRepository.findById(id);
         if(paymentO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Payment not found.");
         }
         var paymentModel = paymentO.get();
-        BeanUtils.copyProperties(paymentRecordDto, paymentModel);
+        BeanUtils.copyProperties(paymentDto, paymentModel);
         return ResponseEntity.status(HttpStatus.OK).body(paymentRepository.save(paymentModel));
     }
 
     @PostMapping("/payments/processarpagamento")
     public ResponseEntity<Object> associatePaymentWithReservation(@RequestBody @Valid ReservationPaymentDto reservationPaymentDto) {
-        Optional<ReservationModel> reservationO = reservationRepository.findById(reservationPaymentDto.reservationId());
+        Optional<Reservation> reservationO = reservationRepository.findById(reservationPaymentDto.reservationId());
         if (reservationO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reservation not found.");
         }
 
-        var paymentModel = new PaymentModel();
+        var paymentModel = new Payment();
         BeanUtils.copyProperties(reservationPaymentDto, paymentModel);
         paymentModel.setReservation(reservationO.get());
 

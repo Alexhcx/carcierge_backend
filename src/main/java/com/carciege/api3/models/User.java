@@ -10,7 +10,6 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,8 +20,8 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "TB_CARS")
-public class CarModel extends RepresentationModel<CarModel> implements Serializable {
+@Table(name = "TB_USERS")
+public class User extends RepresentationModel<User> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -31,42 +30,32 @@ public class CarModel extends RepresentationModel<CarModel> implements Serializa
     private UUID id;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
-    private Set<ReservationModel> reservations = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Reservation> reservations = new HashSet<>();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
-    private Set<RatingModel> ratings = new HashSet<>();
-
-    @Column(nullable = false, length = 30)
-    private String marca;
-
-    @Column(unique = true, nullable = false, length = 30)
-    private String modelo;
-
-    @Column(nullable = false, length = 1000)
-    private String descricao;
-
-    @Column(length = 500)
-    private String imagem;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Rating> ratings = new HashSet<>();
 
     @Column(nullable = false)
-    private int ano;
+    private String firstName;
 
-    @Column(nullable = false, length = 30)
-    private String cor;
+    @Column(nullable = false)
+    private String lastName;
 
-    @Column(nullable = false, length = 20)
-    private String placa;
+    @Column(unique = true, nullable = false)
+    private String email;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal taxa_diaria;
+    @Column(nullable = false)
+    private String password;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal taxa_hora;
+    private String phone_number;
 
-    @Column(nullable = false, length = 20)
-    private String status;
+    private String city;
+
+    private String state;
+
+    private String address;
 
     @Column(nullable = false, updatable = false)
     private String created_at;
