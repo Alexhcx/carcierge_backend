@@ -1,0 +1,59 @@
+-- Inserir dados para o Audi RS6 Avant
+INSERT INTO carros (marca, modelo, ano, cor, placa, taxa_diaria, taxa_hora, status, descricao, imagem)
+VALUES ('Audi', 'RS6 Avant', 2020, 'Preto', 'KBX-6214', 19200.34, 7100.50, 'Disponível',
+'O Audi RS6 Avant é um station wagon de alto desempenho que combina a praticidade de um carro familiar com o desempenho de um supercarro...',
+'https://live.staticflickr.com/65535/53774069291_34e54b39aa_o.png');
+
+-- Inserir dados para o BMW X1
+INSERT INTO carros (marca, modelo, ano, cor, placa, taxa_diaria, taxa_hora, status, descricao, imagem)
+VALUES ('BMW', 'X1', 2024, 'Cinza', 'KEI-7778', 15200.00, 6092.20, 'Disponível',
+'O BMW X1 2024 é um SUV compacto de luxo que oferece uma combinação de estilo, desempenho e tecnologia...',
+'https://live.staticflickr.com/65535/53773148637_3b6550b4c3_o.png');
+
+-- Inserir dados para o BMW X6
+INSERT INTO carros (marca, modelo, ano, cor, placa, taxa_diaria, taxa_hora, status, descricao, imagem)
+VALUES ('BMW', 'X6', 2020, 'Verde', 'KEX-4132', 16500.34, 5600.34, 'Disponível',
+'O BMW X6 2020 é um SUV coupé de luxo que combina o estilo elegante de um cupê com a praticidade de um SUV...',
+'https://live.staticflickr.com/65535/53774486305_844a6f113f_o.png');
+
+-- Inserir dados para o BMW X7 RR Edition
+INSERT INTO carros (marca, modelo, ano, cor, placa, taxa_diaria, taxa_hora, status, descricao, imagem)
+VALUES ('BMW', 'X7 RR Edition', 2024, 'Azul escuro', 'KBN-3471', 15100.32, 6610.50, 'Disponível',
+'O BMW X7 RR Edition é uma versão limitada e esportiva do SUV de luxo BMW X7, oferecendo um visual ainda mais agressivo e um desempenho aprimorado...',
+'https://live.staticflickr.com/65535/53773148897_cb0ec8684d_o.png');
+
+-- Inserir dados para o Land Rover Velar
+INSERT INTO carros (marca, modelo, ano, cor, placa, taxa_diaria, taxa_hora, status, descricao, imagem)
+VALUES ('Land Rover', 'Velar', 2021, 'Cinza', 'KET-3967', 19200.34, 7031.34, 'Disponível',
+'O Land Rover Velar 2021 é um SUV de luxo que combina estilo elegante com capacidade off-road...',
+'https://live.staticflickr.com/65535/53774069281_ae2ef02bd6_o.png');
+
+-- Inserir dados para o Mercedes-Benz S580
+INSERT INTO carros (marca, modelo, ano, cor, placa, taxa_diaria, taxa_hora, status, descricao, imagem)
+VALUES ('Mercedes-Benz', 'S580', 2021, 'Preto', 'KDC-6832', 21450.45, 9800.32, 'Disponível',
+'O Mercedes-Benz S 580 2021 é um sedã de luxo de alto desempenho que oferece uma experiência de condução suave e sofisticada...',
+'https://live.staticflickr.com/65535/53774486300_f65cbf2e53_o.png');
+
+-- Inserir dados para o Mercedes-Maybach S600
+INSERT INTO carros (marca, modelo, ano, cor, placa, taxa_diaria, taxa_hora, status, descricao, imagem)
+VALUES ('Mercedes-Maybach', 'S600', 2020, 'Preto', 'KFA-0835', 18200.23, 7850.30, 'Disponível',
+'O Mercedes-Maybach S 600 é um sedã de luxo de alto desempenho que oferece um nível excepcional de conforto, luxo e tecnologia...',
+'https://live.staticflickr.com/65535/53774068946_35779fa627_o.png');
+
+-- Inserir dados para o Range Rover VIP Edition
+INSERT INTO carros (marca, modelo, ano, cor, placa, taxa_diaria, taxa_hora, status, descricao, imagem)
+VALUES ('Range Rover', 'VIP Edition', 2021, 'Vermelha', 'KAX-8228', 17600.24, 6790.34, 'Disponível',
+'O Range Rover VIP Edition é uma versão altamente personalizada do icônico SUV de luxo...',
+'https://live.staticflickr.com/65535/53773148907_208189c9d9_o.png');
+
+-- Inserir dados para o Rolls-Royce Phantom
+INSERT INTO carros (marca, modelo, ano, cor, placa, taxa_diaria, taxa_hora, status, descricao, imagem)
+VALUES ('Rolls-Royce', 'Phantom', 2022, 'Preto', 'KDT-2866', 25390.34, 9100.32, 'Disponível',
+'O Rolls-Royce Phantom é um sedã de luxo de alto desempenho que define o padrão em luxo, exclusividade e artesanato...',
+'https://live.staticflickr.com/65535/53773148907_208189c9d9_o.png');
+
+-- Inserir dados para o Toyota Camry
+INSERT INTO carros (marca, modelo, ano, cor, placa, taxa_diaria, taxa_hora, status, descricao, imagem)
+VALUES ('Toyota', 'Camry', 2019, 'Cinza', 'KET-3144', 22150.23, 7210.53, 'Disponível',
+'O Toyota Camry 2019 é um sedã de médio porte conhecido por sua confiabilidade, eficiência de combustível e um bom conjunto de recursos tecnológicos...',
+'https://live.staticflickr.com/65535/53774068731_bb6667f501_o.png');
