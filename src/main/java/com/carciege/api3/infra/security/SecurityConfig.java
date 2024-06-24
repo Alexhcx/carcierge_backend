@@ -34,7 +34,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/cars").permitAll()
                         .requestMatchers(HttpMethod.GET, "/cars/{id}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/payments/processarpagamento").permitAll()
+                        //.requestMatchers(HttpMethod.GET, "/payments/processarpagamento").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/ratings").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/ratings/all").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

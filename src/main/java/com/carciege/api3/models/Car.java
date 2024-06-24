@@ -73,6 +73,9 @@ public class Car extends RepresentationModel<Car> implements Serializable {
 
     private String updated_at;
 
+    public Car(UUID id, String marca, String modelo) {
+    }
+
     @PrePersist
     protected void onCreate() {
         created_at = String.valueOf(LocalDateTime.now());

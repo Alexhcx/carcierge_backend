@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record RatingDto(@NotNull int rating,
-                        @NotBlank UUID userId,
-                        @NotBlank UUID carId,
+                        @NotNull UUID userId,
+                        @NotNull UUID carId,
                         @NotBlank String comentario) {
 }

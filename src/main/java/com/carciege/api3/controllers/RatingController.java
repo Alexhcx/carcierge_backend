@@ -1,12 +1,15 @@
 package com.carciege.api3.controllers;
 
+import com.carciege.api3.DTOs.GetRatingInfo;
 import com.carciege.api3.DTOs.RatingDto;
+import com.carciege.api3.mapper.RatingMapper;
 import com.carciege.api3.repositories.CarRepository;
 import com.carciege.api3.repositories.RatingRepository;
 import com.carciege.api3.repositories.UserRepository;
 import com.carciege.api3.models.Car;
 import com.carciege.api3.models.Rating;
 import com.carciege.api3.models.User;
+import com.carciege.api3.services.RatingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -32,6 +36,9 @@ public class RatingController {
 
     @Autowired
     CarRepository carRepository;
+
+    @Autowired
+    private RatingService ratingService;
 
     @GetMapping("/ratings")
     public ResponseEntity<List<Rating>> getAllRatings(){
@@ -53,6 +60,14 @@ public class RatingController {
         }
         ratingO.get().add(linkTo(methodOn(RatingController.class).getAllRatings()).withRel("Cars List"));
         return ResponseEntity.status(HttpStatus.OK).body(ratingO.get());
+    }
+
+    @GetMapping("/ratings/all")
+    public List<GetRatingInfo> getAllRatingsAll() {
+        List<Rating> ratings = ratingService.findAll();
+        return ratings.stream()
+                .map(RatingMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/ratings")
@@ -86,7 +101,7 @@ public class RatingController {
 
     @PostMapping("/ratings/fazercomentario")
     public ResponseEntity<Object> saveComentario(@RequestBody @Valid RatingDto ratingDto) {
-        Optional<User> userO = userRepository.findById(ratingDto.userId());
+        Optional<User> userO = userRepository.findById(ratingDto.userId()); // Agora usa ratingDto.userId()
         if (userO.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         }
@@ -103,5 +118,4 @@ public class RatingController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ratingRepository.save(ratingModel));
     }
-
 }

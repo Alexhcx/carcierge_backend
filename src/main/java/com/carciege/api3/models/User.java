@@ -62,6 +62,9 @@ public class User extends RepresentationModel<User> implements Serializable {
 
     private String updated_at;
 
+    public User(UUID id, String firstName, String lastName) {
+    }
+
     @PrePersist
     protected void onCreate() {
         created_at = String.valueOf(LocalDateTime.now());

@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Entity
@@ -39,7 +41,7 @@ public class Rating extends RepresentationModel<Rating> implements Serializable 
     @Column(nullable = false)
     private int rating;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = 250)
     private String comentario;
 
     @Column(nullable = false, updatable = false)
@@ -47,6 +49,6 @@ public class Rating extends RepresentationModel<Rating> implements Serializable 
 
     @PrePersist
     protected void onCreate() {
-        created_at = String.valueOf(LocalDateTime.now());
+        created_at = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 }
