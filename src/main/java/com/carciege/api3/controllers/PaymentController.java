@@ -1,6 +1,7 @@
 package com.carciege.api3.controllers;
 
 import com.carciege.api3.DTOs.PaymentDto;
+import com.carciege.api3.DTOs.PaymentReservationDTO;
 import com.carciege.api3.DTOs.ReservationPaymentDto;
 import com.carciege.api3.repositories.PaymentRepository;
 import com.carciege.api3.repositories.ReservationRepository;
@@ -19,6 +20,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 public class PaymentController {
@@ -57,6 +59,15 @@ public class PaymentController {
         BeanUtils.copyProperties(paymentDto, paymentModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentRepository.save(paymentModel));
     }
+
+    @GetMapping("/payments/custom")
+    public List<PaymentReservationDTO> getAllPaymentsCustom() {
+        List<Payment> payments = paymentRepository.findAll();
+        return payments.stream()
+                .map(PaymentReservationDTO::new)
+                .collect(Collectors.toList());
+    }
+
 
     @DeleteMapping("/payments/{id}")
     public ResponseEntity<Object> deletePayment(@PathVariable(value="id") UUID id) {

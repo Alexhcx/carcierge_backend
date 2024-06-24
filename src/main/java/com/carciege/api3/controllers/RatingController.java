@@ -70,6 +70,18 @@ public class RatingController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/ratings/car/{carId}")
+    public ResponseEntity<Object> getRatingsByCarId(@PathVariable UUID carId) {
+        List<Rating> ratings = ratingRepository.findByCarId(carId);
+        if (ratings.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No ratings found for car with ID: " + carId);
+        }
+        List<GetRatingInfo> ratingInfoList = ratings.stream()
+                .map(RatingMapper::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(ratingInfoList);
+    }
+
     @PostMapping("/ratings")
     public ResponseEntity<Rating> saveRating(@RequestBody @Valid RatingDto ratingDto) {
         var ratingModel = new Rating();
